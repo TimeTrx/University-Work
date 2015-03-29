@@ -1,0 +1,101 @@
+import java.io.*;
+
+
+/* Terminals tokens returned by the scanner). */
+terminal String WRITE, READING, IF, ELSE, RETURN, BEGIN, END, MAIN, 
+                INT, REAL, COMMA, SEMICOLON, SOP, MOP, RBRACK, LBRACK, 
+				EQUALS, NEQUALS, ISE, ID, NUMBER;
+non terminal String Start;
+/* Non terminals */
+ 
+non terminal String Statement, Statements, Type, MultiplicativeExpr;
+non terminal String Program, MethodDecl, Method, FormalParam, Block2, FormalParams, Block, LocalVarDecl, AssignStmt, ReturnStmt, IfStmt, WriteStmt, ReadStmt, Expression, PrimaryExpr, BoolExpression, Main, ActualParams, Fp, Ap;
+
+terminal String STRING, QUOTEDSTRING;
+
+/* Precedences */
+precedence left ISE, EQUALS;
+precedence left ELSE;
+
+/* The grammar */
+
+Start ::= Program:p {: RESULT = "import java.io.*;\npublic class A4 {\n "+p+ "\n}"; :} ;
+
+Program ::= MethodDecl:e1 {:RESULT = e1;:} 
+          | Program:p MethodDecl:e1 {:RESULT = p + "\n" + e1;:};
+
+Type ::= INT{:RESULT = "int";:}
+       | REAL{:RESULT = "double";:}
+       | STRING {:RESULT = "String";:};  
+	   
+MethodDecl ::= Method:e1 {:RESULT = e1;:}
+			|  Main:e1 {:RESULT = e1;:}; 
+
+Method ::= Type:e1 ID:e2 LBRACK Fp:e3 RBRACK Block:e4 {: RESULT = e1 + " " +" "+ e2 + "(" + e3 +") " +e4 ;:};
+
+Main ::= Type MAIN ID LBRACK RBRACK Block:e4 {: RESULT = "public static void main(String[] args) " +e4 ;:};
+
+Fp ::= {:RESULT = "";:} 
+    |  FormalParams:e1 {:RESULT = e1;:};
+
+FormalParams ::= FormalParam:e1 {:RESULT = e1;:} 
+            |    FormalParams:e2 COMMA FormalParam:e1  {:RESULT = e2 + " , " + e1;:};
+			
+FormalParam ::= Type:e1 ID:e2 {:RESULT = e1 +" " + e2;:};
+
+Block2 ::= Block:e1  {:RESULT = e1;:}
+		|  Statement:e1 {:RESULT = e1;:};
+
+
+Block ::= BEGIN Statements:e1 END {:RESULT = " \n { \n"+ e1 +"\n }";:};
+
+Statements ::= Statement:e1 {:RESULT = e1;:}
+             | Statements:e1 Statement:e2 {:RESULT = e1 + "\n" + e2;:}
+			 ;
+
+Statement ::= LocalVarDecl:e1 {:RESULT = e1;:} 
+            | AssignStmt:e1 {:RESULT = e1;:} 
+			| ReturnStmt:e1 {:RESULT = e1;:}
+			| ReadStmt:e1 {:RESULT = e1;:}
+			| WriteStmt:e1 {:RESULT = e1;:}
+			| IfStmt:e1 {:RESULT = e1;:};
+         
+LocalVarDecl ::= Type:e1 ID:e2 SEMICOLON {:RESULT = e1 + " " + e2 + ";";:}
+            |    Type:e1 AssignStmt:e2 {:RESULT = e1 + " " + e2;:} ;
+
+AssignStmt ::= ID:e1 ISE Expression:e2 SEMICOLON {:RESULT = e1 + " = "+ e2 + ";";:} 
+            |  ID:e1 ISE QUOTEDSTRING:e2 SEMICOLON {:RESULT = e1 + " = "+ e2 + ";";:} ;
+
+Expression ::= MultiplicativeExpr:e1 {:RESULT = e1;:}
+             | Expression:e1 SOP:e2 MultiplicativeExpr:e3 {:RESULT = e1 + e2 + e3;:}
+			;
+			
+MultiplicativeExpr ::= PrimaryExpr:e1 {:RESULT = e1;:}
+                     | MultiplicativeExpr:e1 MOP:e2 PrimaryExpr:e3 {:RESULT = e1 + e2 + e3;:}
+                     ;
+
+PrimaryExpr ::= NUMBER:e1 {:RESULT = e1;:}
+              | ID:e1 {:RESULT = e1;:}
+              | LBRACK Expression:e1 RBRACK {:RESULT = "( "+e1+ " )";:}
+              | ID:e1 LBRACK Ap:e2 RBRACK {:RESULT = e1 +" ( "+e2+ " )";:}
+              ;			  
+					 
+
+Ap ::= {:RESULT = "";:} 
+	| ActualParams:e1 {:RESULT = e1;:};  
+
+ActualParams ::= PrimaryExpr:e1 {:RESULT = e1 ;:}
+            |    PrimaryExpr:e1 COMMA PrimaryExpr:e2  {:RESULT =  e1 + " , "+ e2 ;:};
+			
+ReturnStmt ::= RETURN Expression:e1 SEMICOLON {:RESULT = "return " + e1 + ";";:};
+
+ReadStmt ::= READING LBRACK ID:e1 COMMA QUOTEDSTRING:e2 RBRACK SEMICOLON {:RESULT = "try (BufferedReader newThing = new BufferedReader(new FileReader("+e2+")))\n{\nString Line;\nwhile ((Line = newThing.readLine()) != null) \n{\n"+e1+" =Line;\n}\n}\n catch (IOException e) \n{} ";:};
+
+WriteStmt ::= WRITE LBRACK Expression:e1 COMMA QUOTEDSTRING:e2 RBRACK SEMICOLON {:RESULT = "try {\nString outString = String.valueOf("+e1+");\nFile file = new File("+ e2 +");\nif (!file.exists()) {\nfile.createNewFile();\n}\nFileWriter fileWrite = new FileWriter(file.getAbsoluteFile());\nBufferedWriter fileOutWrite = new BufferedWriter(fileWrite);\nfileOutWrite.write(outString);\nfileOutWrite.close();\n\n} catch (IOException e) {\n}";:};
+
+IfStmt ::= IF LBRACK BoolExpression:e1 RBRACK Block2:e2 {:RESULT = "if " + "( "+ e1 + " ) \n" + e2;:}
+		|  IF LBRACK BoolExpression:e1 RBRACK Block2:e2 ELSE Block2:e3 {:RESULT = "if " + "( "+ e1 + " ) \n" + e2 +"\n else \n" + e3;:};
+
+BoolExpression ::= PrimaryExpr:e1 EQUALS PrimaryExpr:e2 {:RESULT = e1 + " == "+ e2 ;:} 
+                 | PrimaryExpr:e1 NEQUALS PrimaryExpr:e2 {:RESULT = e1 + " != "+ e2;:};
+

@@ -1,0 +1,55 @@
+import java.io.*;
+/* Terminals LBRACKtokens returned by the scanner). */
+terminal 	QUOTEDSTRING, WRITE, READING, IF, ELSE, RETURN, BEGIN, END, MAIN, STRING, INT, REAL, COMMA, SEMICOLON, MULT, RBRACK, LBRACK, EQUALS, NEQUALS, ISE, ID, NUMBER;
+
+/* Non terminals */
+non terminal 	Program, Type, MethodDecl, FormalParam, FormalParams, Block, Statement, Statements, LocalVarDecl, AssignStmt, ReturnStmt, IfStmt, WriteStmt, ReadStmt, Expression, PrimaryExpr, BoolExpression, ActualParams, Fp, Ap, ElseStmt;
+
+/* Precedences */
+
+
+/* The grammar */
+
+Program ::= MethodDecl | MethodDecl Program;
+
+Type ::= INT|REAL|STRING; 
+
+MethodDecl ::= Type MAIN ID LBRACK Fp RBRACK Block |Type ID LBRACK Fp RBRACK Block;
+
+Fp ::= | FormalParams;
+
+FormalParams ::= FormalParam | FormalParam COMMA FormalParams;
+
+FormalParam ::= Type ID;
+
+Block ::= BEGIN Statement END | BEGIN Statement Statements END;
+
+Statements ::= Statement | Statement Statements;
+
+Statement ::= Block|LocalVarDecl|AssignStmt|ReturnStmt|IfStmt|WriteStmt|ReadStmt|Expression|ElseStmt;
+
+ElseStmt ::= ELSE Statement; 
+
+LocalVarDecl ::= Type ID SEMICOLON | Type AssignStmt;
+
+AssignStmt ::= ID ISE PrimaryExpr SEMICOLON|ID ISE QUOTEDSTRING SEMICOLON;
+
+ReturnStmt ::= RETURN PrimaryExpr SEMICOLON;
+
+IfStmt ::= IF LBRACK BoolExpression RBRACK Statement;
+
+WriteStmt ::= WRITE LBRACK PrimaryExpr COMMA QUOTEDSTRING RBRACK SEMICOLON;
+
+ReadStmt ::= READING LBRACK ID COMMA QUOTEDSTRING RBRACK SEMICOLON; 
+
+Expression ::= PrimaryExpr MULT PrimaryExpr Statement;
+
+PrimaryExpr ::= NUMBER|ID|ID LBRACK Ap RBRACK;
+
+BoolExpression ::= PrimaryExpr EQUALS PrimaryExpr |PrimaryExpr NEQUALS PrimaryExpr;
+
+Ap ::= | ActualParams;  
+
+ActualParams ::= LBRACK PrimaryExpr RBRACK | LBRACK PrimaryExpr COMMA PrimaryExpr RBRACK;
+
+
