@@ -1,0 +1,46 @@
+p1 age = 18
+
+
+p2 name = "Michael Morand"
+
+
+p3 n = 2 * n
+
+
+p4 n m = n, if n > m
+
+p4 n m = m, if m > n
+
+
+p5 a = map (*2) a
+
+
+p6 (x:xs) = x
+
+
+p7 = foldr (*) 1
+
+
+p8 1 = 1
+
+p8 n  = n * p8(n-1)                                        
+
+
+p9 m h = m -- (m--h)
+
+
+p10 [] = []
+
+p10 = foldr postfix []
+
+
+p11 0 = True
+
+p11 1 = False
+
+p11 n = ~(p11(n-1))    
+
+
+p12 ts = foldr func 0 ts
+func (m1, m2) sum = sum + m1   
+

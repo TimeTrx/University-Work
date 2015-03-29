@@ -1,0 +1,61 @@
+#include <stdio.h>
+//Michael Morand Section Number: 60-140 Date: Oct 17, 11 Lab: 51
+int WasherWeight (int,int,int,int);
+int CircleArea (int,int,int,int, int , int, int , int);
+int PrintWeights (int,int,int,int);
+int main(void)
+{
+int quantity1,thickness1,density1,inner1,outer1,quantity2,thickness2,density2,inner2,outer2,quantity3,thickness3,density3,inner3,outer3,quantity4,thickness4,density4,inner4,outer4;
+printf("Enter quantity, thickness, density, inner diameter, outer diameter for\nWasher Type 1:\n");
+printf("Enter quantity:  \t");
+scanf("%d",&quantity1);
+printf("Enter thickness:\t");
+scanf("%d",&thickness1);
+printf("Enter density:  \t");
+scanf("%d",&density1);
+printf("Enter inner diameter:\t");
+scanf("%d",&inner1);
+printf("Enter outer diameter:\t");
+scanf("%d",&outer1);
+printf("Enter quantity, thickness, density, inner diameter, outer diameter for\nWasher Type 2:\n");
+printf("Enter quantity:  \t");
+scanf("%d",&quantity2);
+printf("Enter thickness:\t");
+scanf("%d",&thickness2);
+printf("Enter density:  \t");
+scanf("%d",&density2);
+printf("Enter inner diameter:\t");
+scanf("%d",&inner2);
+printf("Enter outer diameter:\t");
+scanf("%d",&outer2);
+printf("Enter quantity, thickness, density, inner diameter, outer diameter for\nWasher Type 3:\n");
+printf("Enter quantity:  \t");
+scanf("%d",&quantity3);
+printf("Enter thickness:\t");
+scanf("%d",&thickness3);
+printf("Enter density:  \t");
+scanf("%d",&density3);
+printf("Enter inner diameter:\t");
+scanf("%d",&inner3);
+printf("Enter outer diameter:\t");
+scanf("%d",&outer3);
+printf("Enter quantity, thickness, density, inner diameter, outer diameter for\nWasher Type 4:\n");
+printf("Enter quantity:  \t");
+scanf("%d",&quantity4);
+printf("Enter thickness:\t");
+scanf("%d",&thickness4);
+printf("Enter density:  \t");
+scanf("%d",&density4);
+printf("Enter inner diameter:\t");
+scanf("%d",&inner4);
+printf("Enter outer diameter:\t");
+scanf("%d",&outer4);
+CircleArea(inner1, inner2, inner3, inner4, outer1, outer2, outer3, outer4);
+printf("Washer Type\t Qty\t Thickness\t Density\t Weight\n");
+printf("A %d\n",quantity1);
+printf("B %d\n",thickness1);
+printf("C %d\n",density1);
+printf("D %d\n",inner1);
+printf("Total Weight %d\n",outer1);
+	return 0;
+}
