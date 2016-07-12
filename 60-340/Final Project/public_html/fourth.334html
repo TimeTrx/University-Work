@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fourth Page</title>
+  </head>
+  <body>
+    <h1>My Fourth Web Page</h1>
+    <p>This is my fourth web page!</p>
+    <hr />
+    <table border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <td>Login:</td>
+        <td>$LOGIN</td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td>$PASSWORD</td>
+      </tr>
+    </table>
+    <hr />
+    <p>If your group has only two members you don't have to output the
+       third page's login and password information on this page. Otherwise
+       you do! This file's MIME type must be text/html.</p>
+  </body>
+</html>
